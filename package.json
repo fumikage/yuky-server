@@ -1,0 +1,58 @@
+{
+    "name": "yuky-server",
+    "version": "0.1.0",
+    "description": "Yuky app server back-end",
+    "main": "app.js",
+    "scripts": {
+        "start:dev": "nodemon bin/www",
+        "start": "node bin/www",
+        "deploy": "npx sequelize db:migrate",
+        "deploy:first": "npx sequelize db:create && npm run deploy",
+        "format": "prettier --check **/*",
+        "format:fix": "prettier --write **/*",
+        "lint": "eslint **/*.js",
+        "lint:fix": "eslint --fix **/*.js",
+        "cli:collection:load": "node scripts/load-collection"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fumikage/yuky-server.git"
+    },
+    "author": "Theo CHERBLANC",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/fumikage/yuky-server/issues"
+    },
+    "homepage": "https://github.com/fumikage/yuky-server#readme",
+    "devDependencies": {
+        "chai": "^4.3.4",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.15.0",
+        "mocha": "^6.2.3",
+        "nodemon": "^1.19.4",
+        "npx": "^10.2.2",
+        "pre-commit": "^1.2.2",
+        "prettier": "^1.19.1"
+    },
+    "dependencies": {
+        "axios": "^0.21.1",
+        "body-parser": "^1.19.0",
+        "chalk": "^2.4.2",
+        "cors": "^2.8.5",
+        "debug": "^4.3.1",
+        "dotenv": "^7.0.0",
+        "express": "^4.17.1",
+        "lodash": "^4.17.21",
+        "mime-types": "^2.1.29",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.2",
+        "mysql2": "^1.7.0",
+        "paper-jsdom": "^0.12.8",
+        "pkginfo": "^0.4.1",
+        "sequelize": "^6.6.2",
+        "sequelize-cli": "^6.2.0",
+        "sharp": "^0.28.1",
+        "workerpool": "^6.1.4",
+        "servertools": "git+https://backoffice:SmL_R2vh2NWALUPcJxMr@gitlab.com/kalkinsas/backoffice/servertools.git"
+    }
+}
