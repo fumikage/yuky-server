@@ -1,7 +1,7 @@
 const express = require("express");
 const expressLogger = require("morgan");
 const createError = require("http-errors");
-
+const cors = require("cors");
 const config = require("./config/config.js");
 const utils = require("servertools").server;
 const Logger = require("servertools").logger;
@@ -24,6 +24,7 @@ app.use(
     })
 );
 
+app.use(cors());
 app.use("/", indexRouter);
 
 // catch 404 and forward to error handler

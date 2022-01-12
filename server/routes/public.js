@@ -11,4 +11,6 @@ router.get("/", function(req, res) {
     });
 });
 
+router.post("/login", require("./user").login);
+
 module.exports = router;
