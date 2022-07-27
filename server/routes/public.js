@@ -1,11 +1,10 @@
 const express = require("express");
-const utils = require("servertools").server;
-
+const common = require("../../server/controllers/common");
 const version = require("../../package.json").version;
 const router = express.Router();
 
 router.get("/", function(req, res) {
-    utils.sendAPIResponse(res, 200, {
+    common.sendAPIResponse(res, 200, {
         message: "Yuky Server",
         version
     });

@@ -1,10 +1,10 @@
 const express = require("express");
 const expressLogger = require("morgan");
+const common = require("./server/controllers/common");
 const createError = require("http-errors");
 const cors = require("cors");
 const config = require("./config/config.js");
-const utils = require("servertools").server;
-const Logger = require("servertools").logger;
+const chalk = require("chalk");
 const indexRouter = require("./server/routes/index");
 
 let app = express();
@@ -37,29 +37,9 @@ app.use(function(err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = config.env === "development" ? err : {};
 
-    utils.sendAPIError(res, err.status || 500, err.message);
+    common.sendAPIError(res, err.status || 500, err.message);
 });
 
 module.exports = app;
 
-//------------------- Notification de démarrage du serveur ---------------------
-
-require("pkginfo")(module, "version");
-const version = module.exports.version;
-const dependencies = ["servertools"].reduce((acc, cur) => {
-    let v = require(cur).version;
-    if (v) {
-        acc[cur] = v;
-    }
-    return acc;
-}, {});
-
-//Notification de démarrage du serveur si production
-Logger.success(
-    `Server <b>mediaserver#${version}</b> started` +
-        Object.entries(dependencies).reduce(
-            (acc, [k, v]) => `${acc}\n ├> ${k}#${v}`,
-            ""
-        ),
-    config.env === "production"
-);
+console.log(chalk.green("Server runnng"));

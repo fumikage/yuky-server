@@ -65,10 +65,17 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     len: { args: [0, 100], msg: "phone.length" }
                 }
+            },
+            picture: {
+                type: DataTypes.BLOB
             }
         },
         {}
     );
+    //Associations
+    User.associate = function(models) {
+        User.hasMany(models.Profil);
+    };
 
     User.beforeCreate(_hashPassword);
     User.beforeUpdate(_hashPassword);

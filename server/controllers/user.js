@@ -1,8 +1,8 @@
-const utils = require("servertools").server;
 const common = require("./common");
 const User = require("../models").User;
 const Sequelize = require("../models").sequelize;
 const validator = require("validator");
+const { utils } = require("mocha");
 // const config = require("../../config/config");
 module.exports = {
     allOptions: {
@@ -17,9 +17,9 @@ module.exports = {
         if (mail) {
             console.log("12");
             if (await User.findOne({ where: { mail } })) {
-                return utils.sendAPIResponse(res, 200, 0);
+                return common.sendAPIResponse(res, 200, 0);
             } else {
-                return utils.sendAPIResponse(res, 200, 1);
+                return common.sendAPIResponse(res, 200, 1);
             }
         }
     },
@@ -37,12 +37,12 @@ module.exports = {
 
         if (mail) {
             if (await User.findOne({ where: { mail } })) {
-                return utils.sendAPIError(res, 400, "validation_failed", {
+                return common.sendAPIError(res, 400, "validation_failed", {
                     mail: ["exists"]
                 });
             }
         } else {
-            return utils.sendAPIError(res, 400, "validation_failed", {
+            return common.sendAPIError(res, 400, "validation_failed", {
                 mail: ["null"]
             });
         }
@@ -57,9 +57,9 @@ module.exports = {
                 birthday,
                 sex
             });
-            utils.sendAPIResponse(res, 201, { id: user.id });
+            common.sendAPIResponse(res, 201, { id: user.id });
         } catch (error) {
-            return utils.sendAPIError(
+            return common.sendAPIError(
                 res,
                 ...common.onCRUDError(error, "create_failed")
             );
@@ -78,23 +78,35 @@ module.exports = {
                     id: user.id,
                     mail,
                     firstName: user.firstName,
-                    lastName: user.lastName
+                    lastName: user.lastName,
+                    picture: ""
                 };
                 await user.update({
                     connectedAt: Sequelize.literal("CURRENT_TIMESTAMP")
                 });
-                return utils.sendAPIResponse(res, 200, {
+                return common.sendAPIResponse(res, 200, {
                     access_token,
                     refresh_token,
                     user: userData
                 });
             } else {
-                return utils.sendAPIError(res, 403, "login_failed");
+                return common.sendAPIError(res, 403, "login_failed");
             }
         } else {
-            return utils.sendAPIError(res, 400, "validation_failed", {
+            return common.sendAPIError(res, 400, "validation_failed", {
                 mail: mail ? [] : ["empty"],
                 password: password ? [] : ["empty"]
+            });
+        }
+    },
+    async get(req, res) {
+        let id = req.params.id;
+        let user = await User.findOne({ where: { id } });
+        if (user) {
+            common.sendAPIResponse(res, 200, user);
+        } else {
+            common.sendAPIError(res, 404, "ressource_not_found", {
+                type: "User"
             });
         }
     }
