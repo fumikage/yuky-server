@@ -2,7 +2,10 @@ const common = require("./common");
 const User = require("../models").User;
 const Sequelize = require("../models").sequelize;
 const validator = require("validator");
-const { utils } = require("mocha");
+const fs = require("fs");
+const fsPromises = require("fs").promises;
+const config = require("../../config/config.js");
+
 // const config = require("../../config/config");
 module.exports = {
     allOptions: {
@@ -109,5 +112,43 @@ module.exports = {
                 type: "User"
             });
         }
+    },
+    async savePicture(req, res) {
+        let id = req.params.id;
+        let filePath = config.dataStogage + "/" + id + "/media/profil";
+        console.log("test", req.file);
+        try {
+            if (!fs.existsSync(filePath)) {
+                fs.mkdirSync(filePath);
+            }
+            await fsPromises.writeFile(
+                filePath + "/profil.png",
+                req.file.buffer,
+                err => {
+                    if (err) throw err;
+
+                    console.log("The file was succesfully saved!");
+                }
+            );
+            common.sendAPIResponse(res, 200, "The file was succesfully saved!");
+        } catch (error) {
+            return common.sendAPIError(res, 404, "ressource_not_found", {
+                type: "User"
+            });
+        }
+    },
+    async getProfilPicture(req, res) {
+        let id = req.params.id;
+        let filePath =
+            config.dataStogage + "/" + id + "/media/profil/profil.png";
+        let data = "";
+        if (fs.existsSync(filePath)) {
+            data = await fsPromises.readFile(filePath, "base64");
+        }
+        common.sendAPIResponse(res, 200, {
+            buffer: data,
+            state: fs.existsSync(filePath)
+        });
+        console.log(fs.existsSync(filePath));
     }
 };

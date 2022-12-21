@@ -61,7 +61,7 @@ module.exports = {
             ];
         }
         //On passe ici si erreur non reconnue
-        logger.error(`500 : ${error}`);
+        console.error(`500 : ${error}`);
         return [500, errCode];
     }
 };

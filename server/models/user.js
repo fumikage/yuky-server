@@ -75,6 +75,9 @@ module.exports = (sequelize, DataTypes) => {
     //Associations
     User.associate = function(models) {
         User.hasMany(models.Profil);
+        User.hasMany(models.Habitation);
+        User.hasMany(models.Pets);
+        User.hasMany(models.Petsitter);
     };
 
     User.beforeCreate(_hashPassword);

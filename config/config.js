@@ -5,6 +5,7 @@ module.exports = {
     timezone: process.env.APP_TIMEZONE,
     cacheTime: process.env.CACHE_TIME,
     serverRoot: process.env.SERVER_ROOT,
+    dataStogage: process.env.STORAGE_PATH,
     jwt: {
         access_token: {
             secret: process.env.JWT_ACCESS_SECRET,
